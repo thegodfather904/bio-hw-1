@@ -4,9 +4,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
+import bio.sequence.Alphabet;
+import bio.sequence.ScoringMatrix;
 import bio.sequence.Sequence;
 
 public class FileScanner {
@@ -41,87 +42,55 @@ public class FileScanner {
 	 */
 	public List<Sequence> createSequenceList(String filename) throws Exception{
 		List<Sequence> sequenceList = new ArrayList<>();
-		
-		try{
-			String fullFile = new String(Files.readAllBytes(Paths.get(filename)));
+
+		String fullFile = convertFileToString(filename);
 			
-			String[] split = fullFile.split(Pattern.quote(">"));
+		String[] split = fullFile.split(Pattern.quote(">"));
 			
-			for(String sequenceString : split)
-				if(sequenceString.length() > 0)
-					sequenceList.add(buildSequenceFromString(sequenceString));
-			
-		}catch(Exception e){
-			System.err.println("Error reading file " + filename);
-			throw new Exception();
-		}
+		for(String sequenceString : split)
+			if(sequenceString.length() > 0)
+				sequenceList.add(SequenceBuilder.buildSequenceFromString(sequenceString));
 		
 		return sequenceList;
 	}
 	
 	/**
-	 * Builds a Sequence object from the sequence string
 	 * 
-	 * @param sequenceString
+	 * @param filename
 	 * @return
+	 * @throws Exception
 	 */
-	private Sequence buildSequenceFromString(String sequenceString){
-		Sequence sequence = sequenceIntialSetup(sequenceString);
-		buildFullSequenceFromString(sequence);
-		return sequence;
+	public Alphabet getAlphabet(String filename) throws Exception {
+		Alphabet a = new Alphabet();
+		a.setAlphabet(convertFileToString(filename));
+		return a;
 	}
 	
 	/**
-	 * Takes the first row (the description) and builds the initial values for the sequence
-	 * from it (hsa, refSequence, etc)
 	 * 
-	 * ex. ">hsa:100287010 no KO assigned | (RefSeq) uncharacterized LOC100287010 (N)"
-	 * 
-	 * 
-	 * @param firstRow
+	 * @param filename
 	 * @return
+	 * @throws Exception
 	 */
-	private Sequence sequenceIntialSetup(String sequenceString){
-		Sequence sequence = new Sequence();
-		
-		sequence.setOriginalFromFile(sequenceString);
-		
-		Scanner scan = new Scanner(sequenceString);
-		String firstRow = scan.nextLine();
-		scan.close();
-		sequence.setDescriptionLine(firstRow);
-		
-		//get rid of hsa part before colon
-		firstRow = firstRow.split(":")[1];
+	public ScoringMatrix getScoringMatrix(String filename) throws Exception {
+		ScoringMatrix sm = new ScoringMatrix();
+		sm.setMatrix(convertFileToString(filename));
+		return sm;
+	}
+	
+	private String convertFileToString(String filename) throws Exception{
+		try{
+			return new String(Files.readAllBytes(Paths.get(filename)));
+		}catch(Exception e){
+			System.err.println("Error reading file " + filename);
+			throw new Exception();
+		}
+	}
 
-		//set the id (now the first word)
-		sequence.setHsa(firstRow.split(" " , 2)[0]);
-		
-		//set the refSequence
-		sequence.setRefSequence(firstRow.split("\\|")[1]);
-		
-		return sequence;
-	}
 	
-	/**
-	 * Builds the actual sequence from the given sequence in the file
-	 * @param sequence
-	 */
-	private void buildFullSequenceFromString(Sequence sequence){
-		Scanner scan = new Scanner(sequence.getOriginalFromFile());
-		
-		//skip descriptor row
-		scan.nextLine();
-		
-		StringBuilder builder = new StringBuilder();
-		while(scan.hasNextLine())
-			builder.append(scan.nextLine());
-		
-		sequence.setSequence(builder.toString());
-		
-		scan.close();
-			
-	}
+
+	
+
 	
 	
 }
