@@ -9,13 +9,9 @@ public class PlotValue {
 	public PlotValue() {
 		
 	}
-
-	public PlotValue (int score, PlotValue diagnol, PlotValue horizontal,
-			PlotValue vertical) {
-		this.diagnol = diagnol;
-		this.horizontal = horizontal;
-		this.vertical = vertical;
-		
+	
+	public PlotValue (int score) {
+		this.score = score;
 	}
 	
 	public int getScore() {

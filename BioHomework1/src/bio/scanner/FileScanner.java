@@ -3,6 +3,7 @@ package bio.scanner;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -64,6 +65,16 @@ public class FileScanner {
 		Alphabet a = new Alphabet();
 		a.setAlphabet(convertFileToString(filename));
 		a.setAlphabetArray(a.getAlphabet().toCharArray());
+		
+		Hashtable<Character, Integer> alphabetHash = new Hashtable<>();
+		
+		
+		int index = 0;
+		for(char c : a.getAlphabetArray())
+			alphabetHash.put(c, index++);
+		
+		a.setAlphabetHash(alphabetHash);
+		
 		return a;
 	}
 	

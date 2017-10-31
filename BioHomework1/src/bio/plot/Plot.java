@@ -1,13 +1,15 @@
 package bio.plot;
 
 public class Plot {
-	private PlotValue[][] plot;
 	
-	public PlotValue[][] getPlot() {
-		return plot;
+	private PlotValue[][] plotMatrix;
+	
+	public PlotValue[][] getPlotMatrix() {
+		return plotMatrix;
 	}
 
-	public void setPlot(PlotValue[][] plot) {
-		this.plot = plot;
+	public void setPlotMatrix(PlotValue[][] plotMatrix) {
+		this.plotMatrix = plotMatrix;
 	}
+	
 }
