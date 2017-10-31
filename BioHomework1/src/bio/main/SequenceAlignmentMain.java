@@ -18,6 +18,7 @@ public class SequenceAlignmentMain {
 		List<Sequence> dbList;
 		Alphabet alphabet;
 		ScoringMatrix scoringMatrix;
+		int gapPenalty = -3; //TODO read from command line
 		
 		/*TODO read files from command line*/
 //		if (args.length !=7 0) {
@@ -39,7 +40,7 @@ public class SequenceAlignmentMain {
 		}
 		
 		if(userSelection == 1) 
-			GlobalAlignment.runGlobalAlignment(queryList, dbList, alphabet, scoringMatrix);
+			GlobalAlignment.runGlobalAlignment(queryList, dbList, alphabet, scoringMatrix, gapPenalty);
 		else if(userSelection == 2)
 			LocalAlignment.runLocalAlignment();
 		else

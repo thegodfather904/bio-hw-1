@@ -9,7 +9,7 @@ import bio.sequence.Sequence;
 public class GlobalAlignment {
 	
 	public static void runGlobalAlignment(List<Sequence> queryList, List<Sequence> dbList,
-			Alphabet alphabet, ScoringMatrix sm) {
+			Alphabet alphabet, ScoringMatrix sm, int gapPenatly) {
 		
 	}
 	
