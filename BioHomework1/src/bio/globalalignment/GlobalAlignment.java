@@ -67,56 +67,73 @@ public class GlobalAlignment {
 		return plot;
 	}
 	
+	/**
+	 * Fills out the plot using global sequence alignment
+	 * 
+	 * @param plot
+	 * @param qSequence
+	 * @param dbSequence
+	 * @param alphabet
+	 * @param sm
+	 * @param gapPenalty
+	 */
 	private static void fillOutPlot(Plot plot, Sequence qSequence, Sequence dbSequence, Alphabet alphabet,
 			ScoringMatrix sm, int gapPenalty) {
 		
 		PlotValue[][] plotMatrix = plot.getPlotMatrix();
 		
-		//start at row 1 because 0 is filled out
-		int row = 1;
-		
 		int diagnol;
 		int vertical;
 		int horizontal;
-		
 		char qChar;
 		char dbChar;
-		
-		dbChar = dbSequence.getCharSequence()[row - 1];
-		
 		int maxScore;
-		
 		PlotValue currentPlotValue;
 		
-		for(int col = 1; col < dbSequence.getCharSequence().length + 1; col++){
+		//start at row 1, col 1 because 0 is filled out
+		for(int row = 1; row < qSequence.getCharSequence().length + 1; row++){
 			
-			currentPlotValue = new PlotValue();
+			dbChar = dbSequence.getCharSequence()[row - 1];
 			
-			qChar = qSequence.getCharSequence()[col - 1];
-			
-			diagnol = calcScoreFromScoringMatrix(qChar, dbChar, alphabet, sm) + plotMatrix[row - 1][col - 1].getScore();
-			vertical = plotMatrix[row - 1][col].getScore() + gapPenalty;
-			horizontal = plotMatrix[row][col - 1].getScore() + gapPenalty;
-			
-			//pick max score
-			maxScore = Math.max(Math.max(diagnol, vertical), horizontal);
-			
-			currentPlotValue.setScore(maxScore);
-			plotMatrix[row][col] = currentPlotValue;
-			
-			//set path so we can revert back later
-			if(diagnol == maxScore)
-				currentPlotValue.setDiagnol(plotMatrix[row - 1][col - 1]);
-			
-			if(vertical == maxScore)
-				currentPlotValue.setVertical(plotMatrix[row - 1][col]);
-			
-			if(horizontal == maxScore)
-				currentPlotValue.setHorizontal(plotMatrix[row][col - 1]);
-			
+			for(int col = 1; col < dbSequence.getCharSequence().length + 1; col++){
+				
+				currentPlotValue = new PlotValue();
+				
+				qChar = qSequence.getCharSequence()[col - 1];
+				
+				diagnol = calcScoreFromScoringMatrix(qChar, dbChar, alphabet, sm) + plotMatrix[row - 1][col - 1].getScore();
+				vertical = plotMatrix[row - 1][col].getScore() + gapPenalty;
+				horizontal = plotMatrix[row][col - 1].getScore() + gapPenalty;
+				
+				//pick max score
+				maxScore = Math.max(Math.max(diagnol, vertical), horizontal);
+				
+				currentPlotValue.setScore(maxScore);
+				plotMatrix[row][col] = currentPlotValue;
+				
+				//set path so we can revert back later
+				if(diagnol == maxScore)
+					currentPlotValue.setDiagnol(plotMatrix[row - 1][col - 1]);
+				
+				if(vertical == maxScore)
+					currentPlotValue.setVertical(plotMatrix[row - 1][col]);
+				
+				if(horizontal == maxScore)
+					currentPlotValue.setHorizontal(plotMatrix[row][col - 1]);
+				
+			}
 		}
 	}
 	
+	/**
+	 * Calculates the score for replacement using the scoring matrix
+	 * 
+	 * @param qChar
+	 * @param dbChar
+	 * @param alphabet
+	 * @param sm
+	 * @return
+	 */
 	private static int calcScoreFromScoringMatrix(char qChar, char dbChar, Alphabet alphabet,
 			ScoringMatrix sm) {
 		
