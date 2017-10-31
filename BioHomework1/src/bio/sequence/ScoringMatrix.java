@@ -2,13 +2,22 @@ package bio.sequence;
 
 public class ScoringMatrix {
 	
-	private String matrix;
-
-	public String getMatrix() {
-		return matrix;
+	private String originalMatrix;
+	private int[][] scoringMatrix;
+	
+	public int[][] getScoringMatrix() {
+		return scoringMatrix;
 	}
 
-	public void setMatrix(String matrix) {
-		this.matrix = matrix;
+	public void setScoringMatrix(int[][] scoringMatrix) {
+		this.scoringMatrix = scoringMatrix;
+	}
+
+	public String getOriginalMatrix() {
+		return originalMatrix;
+	}
+
+	public void setOriginalMatrix(String originalMatrix) {
+		this.originalMatrix = originalMatrix;
 	}
 }

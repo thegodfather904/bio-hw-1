@@ -32,18 +32,20 @@ public class SequenceAlignmentMain {
 			queryList = fscanner.createSequenceList("query.txt");
 			dbList = fscanner.createSequenceList("database.txt");
 			alphabet = fscanner.getAlphabet("alphabet.txt");
-			scoringMatrix = fscanner.getScoringMatrix("scoringmatrix.txt");
+			scoringMatrix = fscanner.getScoringMatrix("scoringmatrix.txt", alphabet);
 		} catch (Exception e) {
 			System.err.println("Error parsing files - program ending");
 			return;
 		}
 		
 		if(userSelection == 1) 
-			GlobalAlignment.runGlobalAlignment();
+			GlobalAlignment.runGlobalAlignment(queryList, dbList, alphabet, scoringMatrix);
 		else if(userSelection == 2)
 			LocalAlignment.runLocalAlignment();
 		else
 			DovetailAlignment.runDovetailAlignment();
+		
+		System.out.println("DONE!");
 	}
 
 }

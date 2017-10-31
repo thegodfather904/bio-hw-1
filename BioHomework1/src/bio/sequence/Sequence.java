@@ -6,6 +6,7 @@ public class Sequence {
 	private String hsa;
 	private String refSequence;
 	private String sequence;
+	private char[] charSequence;
 	
 	public String getDescriptionLine() {
 		return descriptionLine;
@@ -45,5 +46,13 @@ public class Sequence {
 
 	public void setOriginalFromFile(String originalFromFile) {
 		this.originalFromFile = originalFromFile;
+	}
+
+	public char[] getCharSequence() {
+		return charSequence;
+	}
+
+	public void setCharSequence(char[] charSequence) {
+		this.charSequence = charSequence;
 	}
 }

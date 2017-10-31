@@ -66,6 +66,8 @@ public class SequenceBuilder {
 		
 		sequence.setSequence(builder.toString());
 		
+		sequence.setCharSequence(sequence.getSequence().toCharArray());
+		
 		scan.close();	
 	}
 }

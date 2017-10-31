@@ -63,6 +63,7 @@ public class FileScanner {
 	public Alphabet getAlphabet(String filename) throws Exception {
 		Alphabet a = new Alphabet();
 		a.setAlphabet(convertFileToString(filename));
+		a.setAlphabetArray(a.getAlphabet().toCharArray());
 		return a;
 	}
 	
@@ -72,9 +73,10 @@ public class FileScanner {
 	 * @return
 	 * @throws Exception
 	 */
-	public ScoringMatrix getScoringMatrix(String filename) throws Exception {
-		ScoringMatrix sm = new ScoringMatrix();
-		sm.setMatrix(convertFileToString(filename));
+	public ScoringMatrix getScoringMatrix(String filename, Alphabet alphabet) throws Exception {
+		ScoringMatrix sm;
+		String scoringMatrixFromFile = convertFileToString(filename);
+		sm = ScoringMatrixBuilder.buildScoringMatrix(scoringMatrixFromFile, alphabet);
 		return sm;
 	}
 	
