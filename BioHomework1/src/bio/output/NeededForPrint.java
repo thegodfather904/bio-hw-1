@@ -1,5 +1,7 @@
 package bio.output;
 
+import java.util.List;
+
 public class NeededForPrint {
 	private Integer finalScore;
 	private String alignedQuery;
@@ -8,7 +10,7 @@ public class NeededForPrint {
 	private int alignedDatabaseStart = 1;
 	private String queryId;
 	private String dbId;
-
+	
 	public String getAlignedQuery() {
 		return alignedQuery;
 	}
@@ -51,5 +53,4 @@ public class NeededForPrint {
 	public void setFinalScore(Integer finalScore) {
 		this.finalScore = finalScore;
 	}
-	
 }

@@ -3,7 +3,9 @@ package bio.globalalignment;
 import java.util.ArrayList;
 import java.util.List;
 
+import bio.output.Graph2;
 import bio.output.NeededForPrint;
+import bio.output.OutputHolder;
 import bio.plot.Plot;
 import bio.plot.PlotValue;
 import bio.sequence.Alphabet;
@@ -20,17 +22,25 @@ public class GlobalAlignment {
 	 * @param sm
 	 * @param gapPenatly
 	 */
-	public static List<NeededForPrint> runGlobalAlignment(List<Sequence> queryList, List<Sequence> dbList,
+	public static OutputHolder runGlobalAlignment(List<Sequence> queryList, List<Sequence> dbList,
 			Alphabet alphabet, ScoringMatrix sm, int gapPenalty) {
+		
+		OutputHolder holder = new OutputHolder();
 		
 		List<NeededForPrint> printList = new ArrayList<>();
 		
 		Plot plot;
 		NeededForPrint nfp;
 		
+		List<Graph2> graph2Stuff = new ArrayList<>();
+		long startTime;
+		long endTime;
+		
 		for(Sequence s : queryList){
 			
 			System.out.println(s.getHsa());
+			
+			startTime = System.currentTimeMillis();
 			
 			for(Sequence d : dbList){
 				
@@ -49,12 +59,19 @@ public class GlobalAlignment {
 				
 				plot = null;
 			}
+			
+			endTime = System.currentTimeMillis();
+			graph2Stuff.add(new Graph2(endTime - startTime, s.getCharSequence().length));
 		}
 			
+		holder.setPrintList(printList);
+		holder.setGraph2Stuff(graph2Stuff);
 		
-		return printList;
+		return holder;
 		
 	}
+	
+	
 	
 	/**
 	 * 

@@ -8,6 +8,7 @@ import bio.globalalignment.GlobalAlignment;
 import bio.localalignment.LocalAlignment;
 import bio.output.NeededForPrint;
 import bio.output.Output;
+import bio.output.OutputHolder;
 import bio.scanner.FileScanner;
 import bio.sequence.Alphabet;
 import bio.sequence.ScoringMatrix;
@@ -43,17 +44,18 @@ public class SequenceAlignmentMain {
 			return;
 		}
 		
-		List<NeededForPrint> alignmentList = new ArrayList<>();
+		OutputHolder holder = new OutputHolder();
 		
 		if(userSelection == 1) 
-			alignmentList = GlobalAlignment.runGlobalAlignment(queryList, dbList, alphabet, scoringMatrix, gapPenalty);
+			holder = GlobalAlignment.runGlobalAlignment(queryList, dbList, alphabet, scoringMatrix, gapPenalty);
 		else if(userSelection == 2)
 			LocalAlignment.runLocalAlignment();
 		else
 			DovetailAlignment.runDovetailAlignment();
 		
 		//Output.printResults(alignmentList, numToDisplay);
-		Output.printForGraph1(alignmentList, 100);
+		//Output.printForGraph1(holder, 100);
+		Output.printForGraph2(holder);
 		
 		System.out.println("DONE!");
 	}

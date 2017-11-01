@@ -6,7 +6,9 @@ import java.util.List;
 
 public class Output {
 	
-	public static void printResults(List<NeededForPrint> printList, int numToPrint){
+	public static void printResults(OutputHolder holder, int numToPrint){
+		
+		List<NeededForPrint> printList = holder.getPrintList();
 		
 		sortList(printList);
 		
@@ -22,12 +24,17 @@ public class Output {
 		}
 	}
 	
-	public static void printForGraph1(List<NeededForPrint> printList, int numToPrint) {
-		sortList(printList);
+	public static void printForGraph1(OutputHolder holder, int numToPrint) {
+		sortList(holder.getPrintList());
 		for(int x = 0; x < numToPrint; x++){
-			System.out.print(printList.get(x).getFinalScore() + ", ");
+			System.out.print(holder.getPrintList().get(x).getFinalScore() + ", ");
 		}
-		
+	}
+	
+	public static void printForGraph2(OutputHolder holder){
+		for(Graph2 g : holder.getGraph2Stuff()){
+			System.out.print("(" + g.getQueryLength() + ", " + g.getTimeToRun() + ")" + ", ");
+		}
 	}
 	
 	private static void sortList(List<NeededForPrint> printList) {
