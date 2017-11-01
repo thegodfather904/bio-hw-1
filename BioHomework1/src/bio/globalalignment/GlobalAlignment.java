@@ -28,24 +28,18 @@ public class GlobalAlignment {
 		Plot plot;
 		NeededForPrint nfp;
 		
-		int sCount = 0;
-		int dbCount = 0;
-		
 		for(Sequence s : queryList){
 			
-			System.out.println("Query " + sCount++);
-			dbCount = 0;
+			System.out.println(s.getHsa());
 			
 			for(Sequence d : dbList){
-				
-				System.out.println("Database " + dbCount++);
 				
 				plot = plotInit(s.getSequence().length(), d.getSequence().length(), gapPenalty);
 				fillOutPlot(plot, s, d, alphabet, sm, gapPenalty);
 				backTrackForAlignment(plot, s, d);
 				
 				nfp = new NeededForPrint();
-				nfp.setFinalScore(plot.getFinalScore());
+				nfp.setFinalScore(new Integer(plot.getFinalScore()));
 				nfp.setQueryId(s.getHsa());
 				nfp.setDbId(d.getHsa());
 				nfp.setAlignedQuery(plot.getAlignedQuery());

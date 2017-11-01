@@ -8,7 +8,6 @@ import bio.globalalignment.GlobalAlignment;
 import bio.localalignment.LocalAlignment;
 import bio.output.NeededForPrint;
 import bio.output.Output;
-import bio.plot.Plot;
 import bio.scanner.FileScanner;
 import bio.sequence.Alphabet;
 import bio.sequence.ScoringMatrix;
@@ -22,7 +21,7 @@ public class SequenceAlignmentMain {
 		List<Sequence> dbList;
 		Alphabet alphabet;
 		ScoringMatrix scoringMatrix;
-		int numToDisplay = 1; //TODO read from command line
+		int numToDisplay = 10; //TODO read from command line
 		int gapPenalty = -3; //TODO read from command line
 		
 		/*TODO read files from command line*/
@@ -36,7 +35,7 @@ public class SequenceAlignmentMain {
 		try {
 			userSelection = fscanner.getUserSelection("1");
 			queryList = fscanner.createSequenceList("query.txt");
-			dbList = fscanner.createSequenceList("database2.txt");
+			dbList = fscanner.createSequenceList("database.txt");
 			alphabet = fscanner.getAlphabet("alphabet.txt");
 			scoringMatrix = fscanner.getScoringMatrix("scoringmatrix.txt", alphabet);
 		} catch (Exception e) {

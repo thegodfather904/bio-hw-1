@@ -1,20 +1,14 @@
 package bio.output;
 
 public class NeededForPrint {
-	private int finalScore;
+	private Integer finalScore;
 	private String alignedQuery;
 	private String alignedDatabase;
 	private int alignedQueryStart = 1;
 	private int alignedDatabaseStart = 1;
 	private String queryId;
 	private String dbId;
-	
-	public int getFinalScore() {
-		return finalScore;
-	}
-	public void setFinalScore(int finalScore) {
-		this.finalScore = finalScore;
-	}
+
 	public String getAlignedQuery() {
 		return alignedQuery;
 	}
@@ -50,6 +44,12 @@ public class NeededForPrint {
 	}
 	public void setDbId(String dbId) {
 		this.dbId = dbId;
+	}
+	public Integer getFinalScore() {
+		return finalScore;
+	}
+	public void setFinalScore(Integer finalScore) {
+		this.finalScore = finalScore;
 	}
 	
 }
