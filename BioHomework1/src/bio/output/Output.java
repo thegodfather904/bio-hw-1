@@ -22,6 +22,14 @@ public class Output {
 		}
 	}
 	
+	public static void printForGraph1(List<NeededForPrint> printList, int numToPrint) {
+		sortList(printList);
+		for(int x = 0; x < numToPrint; x++){
+			System.out.print(printList.get(x).getFinalScore() + ", ");
+		}
+		
+	}
+	
 	private static void sortList(List<NeededForPrint> printList) {
 		Collections.sort(printList, new Comparator<NeededForPrint>() {
 		    @Override

@@ -35,7 +35,7 @@ public class SequenceAlignmentMain {
 		try {
 			userSelection = fscanner.getUserSelection("1");
 			queryList = fscanner.createSequenceList("query.txt");
-			dbList = fscanner.createSequenceList("database.txt");
+			dbList = fscanner.createSequenceList("database2.txt");
 			alphabet = fscanner.getAlphabet("alphabet.txt");
 			scoringMatrix = fscanner.getScoringMatrix("scoringmatrix.txt", alphabet);
 		} catch (Exception e) {
@@ -52,7 +52,8 @@ public class SequenceAlignmentMain {
 		else
 			DovetailAlignment.runDovetailAlignment();
 		
-		Output.printResults(alignmentList, numToDisplay);
+		//Output.printResults(alignmentList, numToDisplay);
+		Output.printForGraph1(alignmentList, 100);
 		
 		System.out.println("DONE!");
 	}
