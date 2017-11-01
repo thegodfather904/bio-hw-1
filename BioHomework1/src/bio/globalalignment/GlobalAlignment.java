@@ -26,6 +26,7 @@ public class GlobalAlignment {
 			for(Sequence d : dbList){
 				plot = plotInit(s.getSequence().length(), d.getSequence().length(), gapPenalty);
 				fillOutPlot(plot, s, d, alphabet, sm, gapPenalty);
+				backTrackForAlignment(plot, s, d);
 			}
 				
 		
@@ -43,23 +44,23 @@ public class GlobalAlignment {
 	private static Plot plotInit(int querySequenceSize, int dbSequenceSize, int gapPenalty) {
 		Plot plot = new Plot();
 		
-		PlotValue[][] plotMatrix = new PlotValue[++querySequenceSize][++dbSequenceSize];
+		PlotValue[][] plotMatrix = new PlotValue[++dbSequenceSize][++querySequenceSize];
 		
 		//set values in first row
 		PlotValue pv;
 		int currentPenatly = 0;
-		for(int x = 0; x < querySequenceSize; x++){
+		for(int col = 0; col < querySequenceSize; col++){
 			pv = new PlotValue(currentPenatly);
 			currentPenatly += gapPenalty;
-			plotMatrix[0][x] = pv;
+			plotMatrix[0][col] = pv;
 		}
 		
 		//set values in first column
 		currentPenatly = gapPenalty;
-		for(int y = 1; y < dbSequenceSize; y++){
+		for(int row = 1; row < dbSequenceSize; row++){
 			pv = new PlotValue(currentPenatly);
 			currentPenatly += gapPenalty;
-			plotMatrix[y][0] = pv;
+			plotMatrix[row][0] = pv;
 		}
 		
 		plot.setPlotMatrix(plotMatrix);
@@ -91,11 +92,11 @@ public class GlobalAlignment {
 		PlotValue currentPlotValue;
 		
 		//start at row 1, col 1 because 0 is filled out
-		for(int row = 1; row < qSequence.getCharSequence().length + 1; row++){
+		for(int row = 1; row < dbSequence.getCharSequence().length + 1; row++){
 			
 			dbChar = dbSequence.getCharSequence()[row - 1];
 			
-			for(int col = 1; col < dbSequence.getCharSequence().length + 1; col++){
+			for(int col = 1; col < qSequence.getCharSequence().length + 1; col++){
 				
 				currentPlotValue = new PlotValue();
 				
@@ -109,6 +110,8 @@ public class GlobalAlignment {
 				maxScore = Math.max(Math.max(diagnol, vertical), horizontal);
 				
 				currentPlotValue.setScore(maxScore);
+				currentPlotValue.setRow(row);
+				currentPlotValue.setCol(col);
 				plotMatrix[row][col] = currentPlotValue;
 				
 				//set path so we can revert back later
@@ -120,9 +123,13 @@ public class GlobalAlignment {
 				
 				if(horizontal == maxScore)
 					currentPlotValue.setHorizontal(plotMatrix[row][col - 1]);
-				
 			}
 		}
+		
+		int finalScore = plotMatrix[dbSequence.getCharSequence().length][qSequence.getCharSequence().length].getScore();
+		
+		plot.setFinalScore(finalScore);
+		
 	}
 	
 	/**
@@ -147,6 +154,44 @@ public class GlobalAlignment {
 		score = sm.getScoringMatrix()[qIndex][dbIndex];
 		
 		return score;
+	}
+	
+	private static void backTrackForAlignment(Plot plot, Sequence qSequence, Sequence dbSequence) {
+		
+		//start at last position in char array
+		int qCharPosition = qSequence.getCharSequence().length - 1;
+		int dbCharPosition = dbSequence.getCharSequence().length - 1;
+		
+		//start at bottom right corner (add 1 because we added a row/col)
+		PlotValue currentPlotValue = plot.getPlotMatrix()[dbCharPosition + 1][qCharPosition + 1];
+		
+		StringBuilder querySb = new StringBuilder();
+		StringBuilder databaseSb = new StringBuilder();
+		
+		String DASH = "-";
+		
+		//go until at starting position
+		while(currentPlotValue.getDiagnol() != null || currentPlotValue.getVertical() != null || 
+				currentPlotValue.getHorizontal() != null){
+			if(currentPlotValue.getDiagnol() != null){
+				querySb.append(qSequence.getCharSequence()[qCharPosition--]);
+				databaseSb.append(dbSequence.getCharSequence()[dbCharPosition--]);
+				currentPlotValue = currentPlotValue.getDiagnol();
+			}else if (currentPlotValue.getVertical() != null){
+				querySb.append(qSequence.getCharSequence()[qCharPosition--]);
+				databaseSb.append(DASH);
+				currentPlotValue = currentPlotValue.getVertical();
+			}else if (currentPlotValue.getHorizontal() != null){
+				querySb.append(DASH);
+				databaseSb.append(dbSequence.getCharSequence()[dbCharPosition--]);
+				currentPlotValue = currentPlotValue.getHorizontal();
+			}
+		}
+		
+		plot.setAlignedQuery(querySb.reverse().toString());
+		plot.setAlignedDatabase(databaseSb.reverse().toString());
+		
+			
 	}
 	
 }
