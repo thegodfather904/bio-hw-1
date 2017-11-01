@@ -28,8 +28,18 @@ public class GlobalAlignment {
 		Plot plot;
 		NeededForPrint nfp;
 		
-		for(Sequence s : queryList)
+		int sCount = 0;
+		int dbCount = 0;
+		
+		for(Sequence s : queryList){
+			
+			System.out.println("Query " + sCount++);
+			dbCount = 0;
+			
 			for(Sequence d : dbList){
+				
+				System.out.println("Database " + dbCount++);
+				
 				plot = plotInit(s.getSequence().length(), d.getSequence().length(), gapPenalty);
 				fillOutPlot(plot, s, d, alphabet, sm, gapPenalty);
 				backTrackForAlignment(plot, s, d);
@@ -45,6 +55,8 @@ public class GlobalAlignment {
 				
 				plot = null;
 			}
+		}
+			
 		
 		return printList;
 		
@@ -196,12 +208,12 @@ public class GlobalAlignment {
 				databaseSb.append(dbSequence.getCharSequence()[dbCharPosition--]);
 				currentPlotValue = currentPlotValue.getDiagnol();
 			}else if (currentPlotValue.getVertical() != null){
-				querySb.append(qSequence.getCharSequence()[qCharPosition--]);
-				databaseSb.append(DASH);
-				currentPlotValue = currentPlotValue.getVertical();
-			}else if (currentPlotValue.getHorizontal() != null){
 				querySb.append(DASH);
 				databaseSb.append(dbSequence.getCharSequence()[dbCharPosition--]);
+				currentPlotValue = currentPlotValue.getVertical();
+			}else if (currentPlotValue.getHorizontal() != null){
+				querySb.append(qSequence.getCharSequence()[qCharPosition--]);
+				databaseSb.append(DASH);
 				currentPlotValue = currentPlotValue.getHorizontal();
 			}
 		}

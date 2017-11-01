@@ -35,8 +35,8 @@ public class SequenceAlignmentMain {
 
 		try {
 			userSelection = fscanner.getUserSelection("1");
-			queryList = fscanner.createSequenceList("querytest.txt");
-			dbList = fscanner.createSequenceList("databasetest.txt");
+			queryList = fscanner.createSequenceList("query.txt");
+			dbList = fscanner.createSequenceList("database2.txt");
 			alphabet = fscanner.getAlphabet("alphabet.txt");
 			scoringMatrix = fscanner.getScoringMatrix("scoringmatrix.txt", alphabet);
 		} catch (Exception e) {
