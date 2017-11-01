@@ -1,7 +1,9 @@
 package bio.globalalignment;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import bio.output.NeededForPrint;
 import bio.plot.Plot;
 import bio.plot.PlotValue;
 import bio.sequence.Alphabet;
@@ -18,17 +20,33 @@ public class GlobalAlignment {
 	 * @param sm
 	 * @param gapPenatly
 	 */
-	public static void runGlobalAlignment(List<Sequence> queryList, List<Sequence> dbList,
+	public static List<NeededForPrint> runGlobalAlignment(List<Sequence> queryList, List<Sequence> dbList,
 			Alphabet alphabet, ScoringMatrix sm, int gapPenalty) {
 		
+		List<NeededForPrint> printList = new ArrayList<>();
+		
 		Plot plot;
+		NeededForPrint nfp;
+		
 		for(Sequence s : queryList)
 			for(Sequence d : dbList){
 				plot = plotInit(s.getSequence().length(), d.getSequence().length(), gapPenalty);
 				fillOutPlot(plot, s, d, alphabet, sm, gapPenalty);
 				backTrackForAlignment(plot, s, d);
-			}
 				
+				nfp = new NeededForPrint();
+				nfp.setFinalScore(plot.getFinalScore());
+				nfp.setQueryId(s.getHsa());
+				nfp.setDbId(d.getHsa());
+				nfp.setAlignedQuery(plot.getAlignedQuery());
+				nfp.setAlignedDatabase(plot.getAlignedDatabase());
+				
+				printList.add(nfp);
+				
+				plot = null;
+			}
+		
+		return printList;
 		
 	}
 	

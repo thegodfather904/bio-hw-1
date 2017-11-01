@@ -1,10 +1,14 @@
 package bio.main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import bio.dovetailalignment.DovetailAlignment;
 import bio.globalalignment.GlobalAlignment;
 import bio.localalignment.LocalAlignment;
+import bio.output.NeededForPrint;
+import bio.output.Output;
+import bio.plot.Plot;
 import bio.scanner.FileScanner;
 import bio.sequence.Alphabet;
 import bio.sequence.ScoringMatrix;
@@ -18,6 +22,7 @@ public class SequenceAlignmentMain {
 		List<Sequence> dbList;
 		Alphabet alphabet;
 		ScoringMatrix scoringMatrix;
+		int numToDisplay = 1; //TODO read from command line
 		int gapPenalty = -3; //TODO read from command line
 		
 		/*TODO read files from command line*/
@@ -39,12 +44,16 @@ public class SequenceAlignmentMain {
 			return;
 		}
 		
+		List<NeededForPrint> alignmentList = new ArrayList<>();
+		
 		if(userSelection == 1) 
-			GlobalAlignment.runGlobalAlignment(queryList, dbList, alphabet, scoringMatrix, gapPenalty);
+			alignmentList = GlobalAlignment.runGlobalAlignment(queryList, dbList, alphabet, scoringMatrix, gapPenalty);
 		else if(userSelection == 2)
 			LocalAlignment.runLocalAlignment();
 		else
 			DovetailAlignment.runDovetailAlignment();
+		
+		Output.printResults(alignmentList, numToDisplay);
 		
 		System.out.println("DONE!");
 	}
