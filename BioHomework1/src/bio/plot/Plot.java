@@ -9,6 +9,9 @@ public class Plot {
 	private int alignedQueryStart = 1;
 	private int alignedDatabaseStart = 1;
 	
+	//for local
+	private PlotValue maxScorePlotValue;
+	
 	public PlotValue[][] getPlotMatrix() {
 		return plotMatrix;
 	}
@@ -56,5 +59,12 @@ public class Plot {
 	public void setAlignedDatabaseStart(int alignedDatabaseStart) {
 		this.alignedDatabaseStart = alignedDatabaseStart;
 	}
-	
+
+	public PlotValue getMaxScorePlotValue() {
+		return maxScorePlotValue;
+	}
+
+	public void setMaxScorePlotValue(PlotValue maxScorePlotValue) {
+		this.maxScorePlotValue = maxScorePlotValue;
+	}
 }

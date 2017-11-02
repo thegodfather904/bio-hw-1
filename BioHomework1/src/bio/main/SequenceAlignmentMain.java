@@ -22,7 +22,7 @@ public class SequenceAlignmentMain {
 		List<Sequence> dbList;
 		Alphabet alphabet;
 		ScoringMatrix scoringMatrix;
-		int numToDisplay = 10; //TODO read from command line
+		int numToDisplay = 1; //TODO read from command line
 		int gapPenalty = -3; //TODO read from command line
 		
 		/*TODO read files from command line*/
@@ -34,7 +34,7 @@ public class SequenceAlignmentMain {
 		FileScanner fscanner = new FileScanner();
 
 		try {
-			userSelection = fscanner.getUserSelection("1");
+			userSelection = fscanner.getUserSelection("2");
 			queryList = fscanner.createSequenceList("query.txt");
 			dbList = fscanner.createSequenceList("database2.txt");
 			alphabet = fscanner.getAlphabet("alphabet.txt");
@@ -49,11 +49,11 @@ public class SequenceAlignmentMain {
 		if(userSelection == 1) 
 			holder = GlobalAlignment.runGlobalAlignment(queryList, dbList, alphabet, scoringMatrix, gapPenalty);
 		else if(userSelection == 2)
-			LocalAlignment.runLocalAlignment();
+			holder = LocalAlignment.runLocalAlignment(queryList, dbList, alphabet, scoringMatrix, gapPenalty);
 		else
 			DovetailAlignment.runDovetailAlignment();
 		
-		//Output.printResults(alignmentList, numToDisplay);
+		//Output.printResults(holder, numToDisplay);
 		//Output.printForGraph1(holder, 100);
 		Output.printForGraph2(holder);
 		

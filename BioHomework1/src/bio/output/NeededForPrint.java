@@ -1,6 +1,5 @@
 package bio.output;
 
-import java.util.List;
 
 public class NeededForPrint {
 	private Integer finalScore;

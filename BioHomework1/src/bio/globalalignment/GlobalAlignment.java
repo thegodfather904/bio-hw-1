@@ -228,11 +228,8 @@ public class GlobalAlignment {
 				currentPlotValue = currentPlotValue.getHorizontal();
 			}
 		}
-		
 		plot.setAlignedQuery(querySb.reverse().toString());
 		plot.setAlignedDatabase(databaseSb.reverse().toString());
-		
-			
 	}
 	
 }
